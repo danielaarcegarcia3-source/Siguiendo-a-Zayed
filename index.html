@@ -1,0 +1,348 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>La historia de Zayed</title>
+<style>
+:root{--bg:#f3eee4;--fg:#1d1a16;--pan:rgba(243,238,228,.94);--acc:#c98a3d;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1116;--fg:#f4efe6;--pan:rgba(14,17,22,.94);--acc:#e9b872}}
+:root[data-theme="dark"]{--bg:#0e1116;--fg:#f4efe6;--pan:rgba(14,17,22,.94);--acc:#e9b872}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+body{height:100%;margin:0;background:var(--bg);color:var(--fg);font:18px/1.55 Georgia,"Times New Roman",serif;overflow:hidden}
+canvas{display:block;width:100%;height:100%}
+.h{position:fixed;pointer-events:none;color:#f6f0e4;text-shadow:0 2px 8px #000d;font-size:20px;letter-spacing:.03em}
+#ch{top:calc(14px + env(safe-area-inset-top,0px));left:18px}#mem{top:calc(14px + env(safe-area-inset-top,0px));right:18px}
+#calm{left:18px;bottom:calc(20px + env(safe-area-inset-bottom,0px));width:310px}
+#bar{height:18px;background:#fff4;border-radius:9px;margin-top:6px;overflow:hidden}#fill{height:100%;width:50%;background:#6fbf73;transition:background .3s}
+#sub{left:50%;bottom:calc(92px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);width:min(760px,90vw);text-align:center;font-size:25px;background:#0009;padding:12px 18px;border-radius:10px;opacity:0;transition:opacity .6s}
+#hint{left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);opacity:.9}
+#ring{position:fixed;left:50%;top:50%;width:54px;height:54px;margin:-27px;border-radius:50%;pointer-events:none;--p:0;background:conic-gradient(var(--acc) calc(var(--p)*1turn),#fff2 0);-webkit-mask:radial-gradient(circle,transparent 20px,#000 21px);mask:radial-gradient(circle,transparent 20px,#000 21px);opacity:0}
+#dot{position:fixed;left:50%;top:50%;width:4px;height:4px;margin:-2px;background:#fff9;border-radius:50%;pointer-events:none}
+#vig{position:fixed;inset:0;pointer-events:none;background:radial-gradient(circle,transparent 35%,#1a0f0f 110%);opacity:0}
+.ov{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:var(--pan);padding:20px;overflow:auto}
+.ov>div{max-width:620px}h1{font-weight:400;font-size:34px;margin:0 0 4px}h2{font-size:15px;font-weight:400;letter-spacing:.12em;text-transform:uppercase;color:var(--acc);margin:0 0 18px}
+li{margin:4px 0}button{font:inherit;background:var(--acc);color:#111;border:0;padding:10px 26px;border-radius:24px;cursor:pointer;margin-top:14px}small{opacity:.75}#dlg{position:fixed;z-index:4;color:#f6f0e4;border:2px solid #e9b872;left:50%;top:40%;transform:translate(-50%,-50%);width:min(660px,92vw);background:#000e;padding:16px 20px;border-radius:12px;display:none;pointer-events:auto;font-size:23px}#dlg p{margin:8px 0;cursor:pointer}#dlg b{color:#e9b872}#cut{position:fixed;inset:0;background:#fff;color:#222;display:flex;align-items:center;justify-content:center;text-align:center;padding:30px;opacity:0;pointer-events:none;transition:opacity .15s}#cut p{max-width:560px;opacity:0;transition:opacity .8s;font-size:25px}label{display:block;margin:2px 0;font-size:14px}
+#obj{top:calc(12px + env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%);text-align:center;background:#000a;padding:6px 16px;border-radius:10px;width:min(620px,58vw)}
+#lives{left:18px;bottom:calc(92px + env(safe-area-inset-bottom,0px));font-size:26px;color:#ff7a7a}#aid{top:calc(52px + env(safe-area-inset-top,0px));right:18px}
+#al{top:22%;left:50%;transform:translateX(-50%);background:#b3261e;padding:10px 22px;border-radius:10px;font-size:30px;display:none;text-align:center;width:min(720px,90vw)}
+#br{position:fixed;left:50%;top:50%;display:none;pointer-events:none}#br i{position:absolute;left:50%;top:50%;width:200px;height:200px;margin:-100px;border-radius:50%;border:5px solid #e9b872}#bg{border-style:dashed!important;border-color:#fff!important;opacity:.8}
+.cd{background:#8881;border-radius:10px;padding:6px 12px;margin:6px 0;font-size:18px}kbd{background:var(--acc);color:#111;border-radius:5px;padding:1px 8px;font-family:inherit;font-weight:700;margin-right:6px}
+#keys{right:18px;bottom:calc(20px + env(safe-area-inset-bottom,0px));font-size:18px;opacity:.85}#fl{position:fixed;inset:0;background:#fff;opacity:0;pointer-events:none;transition:opacity .1s;z-index:3}
+#tk{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);width:min(680px,92vw);display:none;z-index:4}#ti{width:100%;box-sizing:border-box;font:inherit;font-size:22px;padding:12px 16px;border-radius:10px;border:2px solid var(--acc);background:#fffdf6;color:#222}
+.nb{position:fixed;inset:0;background:#000c;display:none;z-index:5;overflow:auto;padding:20px}.pg{max-width:880px;margin:auto;background:#f3ead7;color:#3a2f22;border-radius:6px;padding:26px 34px;font-size:20px;background-image:repeating-linear-gradient(#0000 0 31px,#d3c5aa 31px 32px)}.pg h3{margin:22px 0 6px;color:#8a5a2b}
+.gr{display:flex;flex-wrap:wrap;gap:16px}.gr figure{margin:0;background:#fff;padding:8px 8px 6px;box-shadow:0 2px 8px #0005;width:240px;transform:rotate(-1.2deg)}.gr figure:nth-child(2n){transform:rotate(1.4deg)}.gr img{display:block}.gr figcaption{font-size:15px;line-height:1.25;margin-top:5px}
+#aobj{top:calc(64px + env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%);background:#0b4a7acc;padding:6px 16px;border-radius:10px;display:none;border:2px solid #7ad0ff;white-space:nowrap}#arw{display:inline-block;font-size:28px;margin-right:8px;color:#7ad0ff}
+#obj{background:linear-gradient(90deg,#0d2438ee,#173f57ee);border:2px solid #e9b872;border-radius:14px;padding:8px 20px;font-weight:700}#aobj{background:linear-gradient(90deg,#0b3a5aee,#1b6a99ee);border-radius:14px;font-weight:700}#sub{background:linear-gradient(#0a1420ee,#0a1420cc);border:2px solid #ffffff40;border-radius:14px}
+#obj{font-size:17px;padding:5px 16px;font-weight:600}#aobj{font-size:16px;padding:3px 12px;top:calc(52px + env(safe-area-inset-top,0px));opacity:.9;font-weight:600}#arw{font-size:20px;margin-right:6px}#sub{font-size:22px}#keys{font-size:15px;opacity:.7}
+</style></head><body>
+<div id="ch" class="h"></div><div id="mem" class="h">Pases 0 / 8</div>
+<div id="calm" class="h"><span id="cl">Calma de Zayed</span><div id="bar"><div id="fill"></div></div></div>
+<div id="sub" class="h"></div><div id="hint" class="h">E: quedarte a su lado · Mirar con atención: recordar</div>
+<div id="dlg"></div><div id="cut"><p id="cp"></p></div><div id="obj" class="h"></div><div id="aobj" class="h"><span id="arw">▲</span><span id="atx"></span></div><div id="lives" class="h"></div><div id="aid" class="h">Ayuda entregada 0 / 7</div><div id="al" class="h"></div><div id="br"><i id="bg"></i><i id="bp"></i></div><div id="keys" class="h">J cuaderno · P foto · T hablar · H mano</div><div id="fl"></div><div id="tk"><p style="margin:0 0 6px;font-size:24px;color:#fff;text-shadow:0 2px 8px #000">Dile algo a Zayed:</p><input id="ti" maxlength="90" placeholder="Escribe qué le dices a Zayed… (Enter envía, Esc cierra)"></div><div id="nb" class="nb"></div><div id="dw" class="ov" style="display:none;z-index:4"><div style="text-align:center"><h2>Dibujo compartido</h2><p>Elige con las teclas 1 a 4 (o los botones) y haz clic en el papel. Zayed también dibuja.</p><canvas id="dc" width="560" height="320" style="background:#fffaf0;border-radius:8px;max-width:92vw;cursor:crosshair"></canvas><p id="dn" style="margin:6px">0 / 4</p><button onclick="dsel=0">1 · Sol</button> <button onclick="dsel=1">2 · Barca</button> <button onclick="dsel=2">3 · Casa</button> <button onclick="dsel=3">4 · Corazón</button></div></div><div id="dot"></div><div id="ring"></div><div id="vig"></div>
+<div id="intro" class="ov"><div>
+<div id="p1"><h1>Siguiendo a Zayed</h1><h2>La historia</h2>
+<p>Zayed tiene 12 años y vive en Gaza, en un pequeño apartamento no lejos de la playa. Hace un año, en esa playa, murieron su hermano Mohamed y tres primos. Israel dice que su fuerza aérea confundió a los niños con milicianos de Hamas; la ONU dice que ambas partes pudieron haber cometido crímenes de guerra.</p>
+<p>Desde entonces Zayed dejó la escuela, porque le recuerda a su hermano, y ya no se siente seguro cerca del mar, aunque su familia vive de él desde hace generaciones. La ONU calcula que 400.000 niños de Gaza necesitan terapia. Zayed recibe algo de ayuda, pero no la suficiente.</p>
+<p><b>No hay armas ni enemigos.</b> Tu tarea es acompañarlo. La violencia contra los niños nunca se muestra.</p><button onclick="pg(2)">Siguiente ›</button></div>
+<div id="p2" style="display:none"><h2>Cómo se juega</h2>
+<div class="cd"><kbd>W A S D</kbd> mover · <kbd>ratón</kbd> mirar · <kbd>Shift</kbd> correr (lo asusta)</div>
+<div class="cd"><kbd>E</kbd> mantenlo junto a Zayed cuando se detenga: quedarte a su lado</div>
+<div class="cd"><kbd>1 2 3</kbd> qué decirle · <kbd>Espacio</kbd> balón y respiración</div>
+<div class="cd"><kbd>C</kbd> cubrirlo ante un ruido fuerte · <kbd>F</kbd> ayudar (cajas, anciana) · <kbd>H</kbd> ofrecer la mano · <kbd>E</kbd> radio</div>
+<div class="cd"><kbd>T</kbd> escribirle a Zayed con tus palabras · <kbd>P</kbd> foto · <kbd>J</kbd> cuaderno de campo</div><div class="cd">Mantén la mirada en lo que <b>brilla</b>: guardas memorias.</div>
+<div class="cd"><b>Calma de Zayed</b>: si se llena, se cierra y pierdes un <b style="color:#ff7a7a">♥ Vínculo</b>. Con 0 ♥ retomas con calma. No se gana ni se pierde: se aprende a acompañar.</div>
+<label><input type="checkbox" id="oV" checked> Tensión visual (desenfoque y temblor)</label><label><input type="checkbox" id="oS"> Saltar la introducción</label>
+<button id="go">Comenzar</button></div></div></div>
+<div id="end" class="ov" style="display:none"><div>
+<h1>Lo que la experiencia no puede mostrar</h1><h2>Según el reportaje</h2>
+<p>El conflicto del año anterior mató a más de 500 niños en Gaza. Muchos otros perdieron a sus seres queridos y sus casas. La ONU estima que 400.000 niños necesitan terapia; Zayed y tres primos sobrevivientes llevan heridas muy profundas, y reciben algo de ayuda, pero no la suficiente.</p>
+<p>Israel dijo que su fuerza aérea confundió a los niños con milicianos; la ONU dijo que ambas partes pudieron haber cometido crímenes de guerra. La gente canta una despedida a los cuatro niños y pregunta quién dijo que las heridas se curan y que el dolor se atenúa.</p>
+<p><b>Proteger a la infancia</b> es acompañar sin presionar, escuchar, sostener el apoyo psicosocial y respaldar a organizaciones humanitarias como UNICEF, UNRWA, Save the Children, Médicos Sin Fronteras o el CICR. Si tú o alguien cercano está pasando por algo difícil, habla con una persona de confianza o con un servicio de ayuda de tu país.</p><button onclick="location.reload()">Volver a empezar</button></div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+const T=THREE,$=id=>document.getElementById(id),cl=(v,a,b)=>Math.min(b,Math.max(a,v));
+const R=new T.WebGLRenderer({antialias:true});R.setPixelRatio(Math.min(devicePixelRatio,2));R.shadowMap.enabled=true;R.shadowMap.type=T.PCFSoftShadowMap;R.toneMapping=T.ACESFilmicToneMapping;R.outputEncoding=T.sRGBEncoding;R.toneMappingExposure=1.15;document.body.prepend(R.domElement);
+const S=new T.Scene(),C=new T.PerspectiveCamera(70,1,.1,400);C.rotation.order="YXZ";S.fog=new T.Fog(0xdccdb8,18,130);
+const M=(c,r=.9,e=0,x={})=>new T.MeshStandardMaterial(Object.assign({color:c,roughness:r,emissive:e},x));
+// texturas procedurales
+function dots(x,c,n,s){for(let i=0;i<n;i++){x.fillStyle=c[i%c.length];x.fillRect(Math.random()*128,Math.random()*128,s,s)}}
+function tx(fn,rp,rq){const c=document.createElement("canvas");c.width=c.height=128;fn(c.getContext("2d"));const t=new T.CanvasTexture(c);t.wrapS=t.wrapT=T.RepeatWrapping;t.encoding=T.sRGBEncoding;t.repeat.set(rp,rq||rp);return t}
+const sandT=tx(x=>{x.fillStyle="#d9c29a";x.fillRect(0,0,128,128);dots(x,["#c4ab80","#ead8b3","#b99f74"],1500,2)},40,65);
+const plank=(b)=>x=>{x.fillStyle=b;x.fillRect(0,0,128,128);for(let i=0;i<6;i++){x.fillStyle="#0006";x.fillRect(i*21,0,2,128)}dots(x,["#0002","#fff2"],300,3)};
+const MAPS={0xe8dcc6:tx(x=>{x.fillStyle="#e8dcc6";x.fillRect(0,0,128,128);dots(x,["#d8cbb2","#f3eadb"],700,3)},2),0x9a7650:tx(plank("#9a7650"),3),0x8a6a45:tx(plank("#8a6a45"),2)};
+function box(w,h,d,c,x,y,z,p=S,mat){const mp=MAPS[c],m=new T.Mesh(new T.BoxGeometry(w,h,d),mat||M(mp?0xffffff:c,.9,0,mp?{map:mp,bumpMap:mp,bumpScale:.7}:{}));m.position.set(x,y,z);m.castShadow=m.receiveShadow=true;p.add(m);return m}
+const sky=new T.Mesh(new T.SphereGeometry(300,24,12),new T.ShaderMaterial({side:T.BackSide,depthWrite:false,fog:false,uniforms:{t:{value:new T.Color()},b:{value:new T.Color()}},vertexShader:"varying float h;void main(){h=normalize(position).y;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}",fragmentShader:"uniform vec3 t,b;varying float h;void main(){gl_FragColor=vec4(mix(b,t,smoothstep(0.,.7,h)),1.);}"}));S.add(sky);
+const hemi=new T.HemisphereLight(0xcfe3ff,0x8a7358,.8);S.add(hemi);
+const sun=new T.DirectionalLight(0xffe2b8,1.3);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);Object.assign(sun.shadow.camera,{left:-30,right:30,top:30,bottom:-30,far:90});S.add(sun,sun.target);
+const F=[[0,0x8aa0b4,0xe6d6c2,.7],[.3,0x7aa5c8,0xf0e2c8,1.3],[.55,0x6fa0cf,0xf4e8cf,1.5],[.85,0xe08a5a,0xf6c58b,1.1],[1,0x1c2748,0xd98a68,.5]],tc=new T.Color();
+function skyAt(p){let i=0;while(i<F.length-2&&p>F[i+1][0])i++;const a=F[i],b=F[i+1],k=cl((p-a[0])/(b[0]-a[0]),0,1),u=sky.material.uniforms;u.t.value.set(a[1]).lerp(tc.set(b[1]),k);u.b.value.set(a[2]).lerp(tc.set(b[2]),k);S.fog.color.copy(u.b.value);sun.intensity=a[3]+(b[3]-a[3])*k}
+const g=new T.Mesh(new T.PlaneGeometry(160,260),M(0xffffff,1,0,{map:sandT,bumpMap:sandT,bumpScale:.8}));g.rotation.x=-Math.PI/2;g.position.set(-71,0,-50);g.receiveShadow=true;S.add(g);
+const sea=new T.Mesh(new T.PlaneGeometry(300,260,60,52),new T.MeshPhysicalMaterial({color:0x3b7ea6,roughness:.12,metalness:.1,transparent:true,opacity:.9,clearcoat:1,clearcoatRoughness:.1}));sea.rotation.x=-Math.PI/2;sea.position.set(159,-.2,-50);S.add(sea);
+const sp=sea.geometry.attributes.position,o0=sp.array.slice();
+function wave(t){for(let i=0;i<sp.count;i++)sp.array[i*3+2]=Math.sin(o0[i*3]*.15+t)*.12+Math.cos(o0[i*3+1]*.2+t*.8)*.1;sp.needsUpdate=true;sea.geometry.computeVertexNormals()}
+box(.8,.02,260,0xffffff,8.9,.02,-50);
+const cv=document.createElement("canvas");cv.width=64;cv.height=128;const cx=cv.getContext("2d");cx.fillStyle="#cdbfa8";cx.fillRect(0,0,64,128);
+for(let y=0;y<8;y++)for(let x=0;x<4;x++){cx.fillStyle=Math.random()<.25?"#ffd48a":"#4d4f55";cx.fillRect(6+x*15,6+y*15,9,10)}
+const bt=new T.CanvasTexture(cv);bt.encoding=T.sRGBEncoding;bt.wrapS=bt.wrapT=T.RepeatWrapping;
+for(let i=0;i<15;i++){const h=7+Math.random()*9,t=bt.clone();t.needsUpdate=true;t.repeat.set(1.5,h/8);box(6,h,6,0,-12-Math.random()*5,h/2,-12-i*5.6,S,M(0xffffff,.95,0,{map:t}))}
+// habitación
+const W=0xe8dcc6;box(8,.1,8,0x9a7650,0,.05,0);box(8,.1,8,W,0,3.1,0);
+box(.2,3,8,W,-4,1.5,0);box(.2,3,8,W,4,1.5,0);box(8,3,.2,W,0,1.5,4);box(2.8,3,.2,W,-2.6,1.5,-4);box(2.8,3,.2,W,2.6,1.5,-4);box(2.4,.6,.2,W,0,2.7,-4);
+const win=new T.Mesh(new T.PlaneGeometry(2,1.2),M(0xffe9b8,1,0xffd48a));win.position.set(0,1.8,3.88);win.rotation.y=Math.PI;S.add(win);
+const rl=new T.PointLight(0xffd9a0,1.1,12);rl.position.set(0,2.6,0);S.add(rl);
+box(1,.5,2,0x7b5a3c,-2.8,.3,2.6);box(1,.2,1.5,0xa4b5c8,-2.8,.6,2.9);box(1.6,.08,.8,0x6e4f33,2.8,.75,2.9);box(.06,.75,.06,0x4a3523,2.1,.38,2.55);box(.06,.75,.06,0x4a3523,3.5,.38,3.25);
+box(2.4,.02,1.6,0x9c4a3c,0,.11,-1);
+const bag=new T.Group();box(.38,.48,.2,0x2f5d8a,0,0,0,bag);box(.3,.18,.04,0x24496c,0,-.08,.12,bag);bag.position.set(2.8,1.05,2.9);S.add(bag);
+const fr=new T.Group();box(.04,.46,.58,0x3a2a1c,0,0,0,fr);box(.02,.38,.5,0xf1e6cf,.02,0,0,fr);
+[[-.12,.17],[.12,.14]].forEach(([z,s])=>{const b=new T.Mesh(new T.CylinderGeometry(.04,.05,s,8),M(0x4a4038));b.position.set(.04,-.08,z);fr.add(b);const h=new T.Mesh(new T.SphereGeometry(.04,10,8),M(0x4a4038));h.position.set(.04,-.08+s/2+.04,z);fr.add(h)});fr.position.set(3.86,1.7,0);S.add(fr);
+// muelle, barcas
+box(15,.2,3,0x8a6a45,16.5,.05,-40);for(let i=0;i<6;i++){const p=new T.Mesh(new T.CylinderGeometry(.12,.12,1.4,8),M(0x4f3b28));p.position.set(10+i*2.6,-.5,i%2?-38.7:-41.3);S.add(p)}
+const bo=new T.Group();box(4,.6,1.5,0x2e5b7a,0,0,0,bo);box(1.2,.6,1.5,0x2e5b7a,2.4,.1,0,bo);box(.08,3,.08,0x5a4630,-.5,1.7,0,bo);box(.04,2.2,1.2,0xf1e6cf,-.45,1.5,.5,bo);box(1.3,1,1.1,0xd9c9a8,1.2,.8,0,bo);box(1.4,.1,1.2,0xb3563c,1.2,1.35,0,bo);box(4.05,.12,1.55,0xe8742c,0,.3,0,bo);bo.position.set(19,-.05,-42.2);S.add(bo);
+const BT=[bo];for(let i=0;i<5;i++){const b=bo.clone();b.position.set(35+i*22,-.05,-15-i*20);b.rotation.y=Math.random()*3;S.add(b);BT.push(b)}
+const net=box(1.2,.3,1,0x9c8a62,19,.3,-39.5);
+const st4=new T.Group();[[0,0,.16],[.4,.2,.12],[.2,.5,.15],[.6,.6,.13]].forEach(([x,z,r])=>{const s=new T.Mesh(new T.DodecahedronGeometry(r,0),M(0x8c8780,.8));s.position.set(x,r*.7,z);s.castShadow=true;st4.add(s)});st4.position.set(8,.05,-80);S.add(st4);
+const LA=[];for(let i=0;i<4;i++){const l=new T.Mesh(new T.SphereGeometry(.2,14,10),M(0xffc977,.5,0xffb050));l.position.set(7+i*.5,.5,-90+i*1.1);l.visible=false;S.add(l);LA.push(l)}
+const ll=new T.PointLight(0xffbb66,0,22);ll.position.set(8,2,-91);S.add(ll);
+const ball=new T.Mesh(new T.SphereGeometry(.15,16,12),M(0xf4f0e6,.6));ball.castShadow=true;ball.position.set(2,.15,-75);S.add(ball);const bv=new T.Vector3();
+const fl=new T.Mesh(new T.SphereGeometry(.08,10,8),M(0xd94a3a,.5,0x701510));fl.position.set(14,-.1,-37.6);fl.visible=false;S.add(fl);
+// detalle
+function palm(x,z,h){const g=new T.Group();for(let i=0;i<5;i++){const c=new T.Mesh(new T.CylinderGeometry(.16-i*.012,.2-i*.012,1,8),M(0x7a5a3a,.95));c.position.set(i*.09,i+.5,0);c.castShadow=true;g.add(c)}
+for(let i=0;i<8;i++){const p=new T.Group();p.position.set(.4,5.1,0);p.rotation.y=i*.785;const f=new T.Mesh(new T.BoxGeometry(2.4,.04,.5),M(0x3f7d3a,.8));f.position.x=1.2;f.rotation.z=-.45;f.castShadow=true;p.add(f);g.add(p)}g.position.set(x,0,z);g.rotation.y=h;S.add(g)}
+for(let z=-20;z>-110;z-=14)palm(6.2+Math.random()*1.2,z+Math.random()*4,Math.random()*6);
+for(let i=0;i<8;i++){const z=-14-i*9,x=-7-Math.random()*2;box(4,3.2,4,W,x,1.6,z);box(4.3,.2,4.3,0x9a8f80,x,3.3,z);const tk=new T.Mesh(new T.CylinderGeometry(.5,.5,.9,12),M(0x4d6a7a,.4,0,{metalness:.4}));tk.position.set(x+1,3.9,z);tk.castShadow=true;S.add(tk);box(.1,2,.9,0x4a3a2c,x+2.02,1,z);const w=new T.Mesh(new T.PlaneGeometry(.9,.8),M(0xffe0a0,1,0xffcf80));w.position.set(x+2.02,1.9,z+1.2);w.rotation.y=Math.PI/2;S.add(w)}
+for(let i=0;i<3;i++){box(.7,.5,.5,0x8a6a45,12.5+i*1.1,.4,-41.1);const b=new T.Mesh(new T.SphereGeometry(.16,10,8),M(0xe8742c,.5));b.position.set(11.5+i*.5,.3,-38.9);S.add(b)}
+box(.1,2.4,.1,0x3a3a3a,10.5,1.2,-38.7);{const lp=new T.Mesh(new T.SphereGeometry(.15,10,8),M(0xfff0c0,.5,0xffd48a));lp.position.set(10.5,2.5,-38.7);S.add(lp)}
+box(.5,2,1.6,0x6e4f33,-3.7,1,-.5);for(let r=0;r<4;r++)for(let k=0;k<6;k++)box(.2,.32,.1,[0xb34a3c,0x3c6aa8,0x5a8f4a,0xd0a840][(r+k)%4],-3.45,.55+r*.45,-1.1+k*.18);
+box(.35,2.2,.08,0x8a3f3f,-1.4,1.7,3.85);box(.35,2.2,.08,0x8a3f3f,1.4,1.7,3.85);{const ck=new T.Mesh(new T.CylinderGeometry(.22,.22,.04,20),M(0xf5efe0));ck.rotation.x=Math.PI/2;ck.position.set(-2,2.3,3.86);S.add(ck)}
+box(.06,1.4,.06,0x3a3a3a,-3.2,.7,-3.2);{const lm=new T.Mesh(new T.ConeGeometry(.25,.3,12,1,true),M(0xffe9b8,1,0xffd48a,{side:T.DoubleSide}));lm.position.set(-3.2,1.5,-3.2);S.add(lm)}
+// centro de apoyo
+box(8,.1,8,0x9a7650,-5,.05,-112);box(9,.15,9,W,-5,3.1,-112);box(.2,3,8,W,-9,1.5,-112);box(8,3,.2,W,-5,1.5,-116);box(8,3,.2,W,-5,1.5,-108);
+const tl=new T.PointLight(0xffd9a0,1,12);tl.position.set(-5,2.6,-112);S.add(tl);box(2,.4,1,0x8a6a45,-6,.25,-113.5);box(.5,.01,.35,0xffffff,-6.4,.46,-113.5);for(let i=0;i<4;i++){box(.04,.04,.18,[0xd9503c,0x3aa0e0,0xf2c744,0x5aae5a][i],-5.6+i*.12,.47,-113.5);const cu=new T.Mesh(new T.CylinderGeometry(.35,.35,.15,14),M([0xb3563c,0x5a7a9a,0x7a9a5a,0xd9b04a][i]));cu.position.set([-7.5,-4.5,-6,-7][i],.1,[-113,-113,-115,-111.5][i]);S.add(cu)}
+{const dr=(c,x,y,w,h)=>{const p=new T.Mesh(new T.PlaneGeometry(w,h),M(c,1));p.position.set(-8.88,y,-112+x);p.rotation.y=Math.PI/2;S.add(p)};dr(0xf7efd8,0,1.8,2.4,1.5);dr(0xf2c744,-.7,2.2,.4,.4);dr(0xc0503c,.4,1.6,.55,.45);dr(0x3c6aa8,0,1.25,2.2,.18);dr(0x5aae5a,.9,2.1,.3,.5)}
+const Th=person({skin:0xc99a73,shirt:0x7a4a8a,pants:0x3a3a42,hair:0x2a1c1a,s:1});Th.position.set(-6.8,0,-110.5);Th.rotation.y=-.8;
+function beam(c,x,z){const m=new T.Mesh(new T.CylinderGeometry(.35,.35,8,12,1,true),new T.MeshBasicMaterial({color:c,transparent:true,opacity:.13,side:T.DoubleSide,fog:false,depthWrite:false}));m.position.set(x,4,z);S.add(m);return m}
+const LB=[];
+function rr(g,x,y,w,h,r){g.beginPath();g.moveTo(x+r,y);g.arcTo(x+w,y,x+w,y+h,r);g.arcTo(x+w,y+h,x,y+h,r);g.arcTo(x,y+h,x,y,r);g.arcTo(x,y,x+w,y,r);g.closePath()}
+function icon(g,k,x,y){g.fillStyle="#fff";g.strokeStyle="#fff";g.lineWidth=7;
+if(k=="agua"){g.beginPath();g.moveTo(x,y-34);g.bezierCurveTo(x+34,y+4,x+26,y+34,x,y+34);g.bezierCurveTo(x-26,y+34,x-34,y+4,x,y-34);g.fill()}
+else if(k=="manta"){g.fillRect(x-34,y-24,68,48);g.fillStyle="#0006";g.fillRect(x-34,y-8,68,8);g.fillRect(x-34,y+10,68,8)}
+else if(k=="útiles"){g.save();g.translate(x,y);g.rotate(-.7);g.fillRect(-36,-8,56,16);g.beginPath();g.moveTo(20,-8);g.lineTo(38,0);g.lineTo(20,8);g.fill();g.restore()}
+else if(k=="botiquín"||k=="cross"){g.fillRect(x-10,y-34,20,68);g.fillRect(x-34,y-10,68,20)}
+else if(k=="pan"){g.beginPath();g.ellipse(x,y,38,22,0,0,6.3);g.fill();g.strokeStyle="#0006";g.lineWidth=4;for(let i=-1;i<2;i++){g.beginPath();g.moveTo(x+i*14-5,y-14);g.lineTo(x+i*14+5,y+14);g.stroke()}}
+else if(k=="juegos"){g.beginPath();g.arc(x,y,30,0,6.3);g.fill();g.strokeStyle="#0006";g.lineWidth=4;g.beginPath();g.arc(x,y,12,0,6.3);g.stroke()}
+else if(k=="heart"){g.beginPath();g.moveTo(x,y+30);g.bezierCurveTo(x-48,y-8,x-20,y-40,x,y-14);g.bezierCurveTo(x+20,y-40,x+48,y-8,x,y+30);g.fill()}
+else{g.fillRect(x-32,y-12,64,40);g.beginPath();g.arc(x+12,y+8,11,0,6.3);g.fillStyle="#0006";g.fill();g.fillStyle="#fff";g.fillRect(x-24,y-34,4,24)}}
+function lab(title,sub,col,ic,x,y,z,w,r){const c=document.createElement("canvas");c.width=512;c.height=160;const g=c.getContext("2d"),hx="#"+new T.Color(col).getHexString();
+g.shadowColor="#000";g.shadowBlur=14;const gr=g.createLinearGradient(0,0,512,0);gr.addColorStop(0,"#0d2438");gr.addColorStop(1,"#173f57");g.fillStyle=gr;rr(g,8,8,496,144,26);g.fill();g.shadowBlur=0;g.lineWidth=6;g.strokeStyle=hx;rr(g,8,8,496,144,26);g.stroke();
+g.fillStyle=hx;rr(g,8,8,130,144,26);g.fill();icon(g,ic,73,80);g.fillStyle="#fff";g.textBaseline="middle";g.font="bold 44px Arial,sans-serif";g.fillText(title,154,62);g.font="27px Arial,sans-serif";g.fillStyle="#bfe6ff";g.fillText(sub,154,112);
+const t=new T.CanvasTexture(c);t.encoding=T.sRGBEncoding;const p=new T.Sprite(new T.SpriteMaterial({map:t,depthTest:true,fog:false}));p.userData.w=w*.7;p.userData.r=r||9;p.scale.set(w*.7,w*.7/3.2,1);p.position.set(x,y,z);p.renderOrder=5;S.add(p);LB.push(p);return p}
+// ayuda
+const FM=[[-3.8,-17,0xb3563c,.8],[3.9,-21,0x5a7a9a,1],[-3.6,-25,0x7a9a5a,.7]].map(f=>{const p=person({skin:0xc99a73,shirt:f[2],pants:0x3a3a40,hair:0x2a1c16,s:f[3]});p.position.set(f[0],0,f[1]);p.rotation.y=f[0]<0?1.57:-1.57;return p});
+const FMk=FM.map(p=>{const m=new T.Mesh(new T.OctahedronGeometry(.12),M(0x7ad0ff,.4,0x3aa0e0));m.position.set(p.position.x,2,p.position.z);m.visible=false;S.add(m);return m});
+const CR=[["agua",0x3aa0e0,"Agua limpia: muchas familias perdieron su casa y lo básico."],["manta",0xd9503c,"Una manta: muchos niños perdieron a sus seres queridos y necesitan calor y compañía."],["útiles",0x5aae5a,"Útiles escolares: volver a aprender también es una forma de sanar."]].map((c,i)=>{const m=new T.Group();box(.7,.5,.5,0x8a6a45,0,.25,0,m);box(.72,.1,.52,c[1],0,.55,0,m);const k=new T.Mesh(new T.OctahedronGeometry(.1),M(c[1],.4,c[1]));k.position.y=1.1;m.add(k);m.position.set([2,3.6,5.2][i],0,-12);S.add(m);const bm=beam(c[1],m.position.x,-12);lab(c[0].toUpperCase(),"Pulsa F",c[1],c[0],m.position.x,2,-12,3.4);return{n:c[0],t:c[2],i,m,held:0,done:0,bm,col:c[1]}});
+box(4,2.2,3,0xe8e4da,4.5,1.1,-9);box(4.2,.15,3.2,0x2e6fb0,4.5,2.25,-9);box(4,.4,.05,0x2e6fb0,4.5,1.4,-7.47);lab("PUNTO DE AYUDA","Entrega aquí",0x7ad0ff,"cross",4.5,3.7,-9,5.6,18);const TENT=new T.Vector3(4.5,0,-9),NA=7;beam(0x7ad0ff,4.5,-9);
+[["botiquín",0xf2f2f2,"Un botiquín: la atención médica básica alivia el dolor y salva vidas."],["pan",0xd9a05a,"Comida caliente: cuando se pierde la casa, un plato también acompaña."],["juegos",0xa070d0,"Juegos y libros: jugar es un derecho de la infancia y ayuda a recuperarse."]].forEach((c,j)=>{const i=3+j,m=new T.Group();box(.7,.5,.5,0x8a6a45,0,.25,0,m);box(.72,.1,.52,c[1],0,.55,0,m);const k=new T.Mesh(new T.OctahedronGeometry(.1),M(c[1],.4,c[1]));k.position.y=1.1;m.add(k);m.position.set([2,3.6,5.2][j],0,-13.8);S.add(m);const bm=beam(c[1],m.position.x,-13.8);lab(c[0].toUpperCase(),"Pulsa F",c[1],c[0],m.position.x,2,-13.8,3.4);CR.push({n:c[0],t:c[2],i,m,held:0,done:0,bm,col:c[1]})});
+[[3.9,-29,0xb08a3c,.75],[-3.6,-33,0x6a8aa8,.9],[3.8,-35,0x9a5a7a,.8]].forEach(f=>{const p=person({skin:0xc99a73,shirt:f[2],pants:0x3a3a40,hair:0x2a1c16,s:f[3]});p.position.set(f[0],0,f[1]);p.rotation.y=f[0]<0?1.57:-1.57;FM.push(p);const m=new T.Mesh(new T.OctahedronGeometry(.12),M(0x7ad0ff,.4,0x3aa0e0));m.position.set(f[0],2,f[1]);m.visible=false;S.add(m);FMk.push(m)});
+const NEED=["agua","manta","útiles","botiquín","pan","juegos"],FB2=FM.map((p,i)=>{lab("NECESITAN",NEED[i],CR[i].col,NEED[i],p.position.x,2.8,p.position.z,3.6,8);const b=beam(CR[i].col,p.position.x,p.position.z);b.visible=false;return b});
+const EL=person({skin:0xb88a64,shirt:0x4a3a5a,pants:0x2a2a30,hair:0xd0d0d0,s:.95}),ELS={s:0};EL.position.set(-3.8,0,-37);EL.rotation.y=1.57;EL.userData.head.rotation.x=.2;lab("ANCIANA","Pulsa F: ayudarla",0xb090e0,"heart",-3.8,2.7,-37,3.6);const elb=beam(0xb090e0,-3.8,-37);
+const RAD=new T.Vector3(6.2,0,-11),RM=["Radio comunitaria: se recuerda a las familias dónde está el Punto de Ayuda.","Radio comunitaria: hay apoyo psicológico para niñas y niños. Hablar ayuda.","Radio comunitaria: si un niño se asusta con un ruido fuerte, acérquense, hablen bajito y respiren con él.","Radio comunitaria: la ayuda llega a más niños cuando el mundo está informado. Cuenta lo que viste."];let ri=0;
+box(.8,.4,.5,0x8a6a45,6.2,.2,-11);box(.6,.4,.3,0x2a2a2e,6.2,.6,-11);box(.05,1.2,.05,0x999999,6.4,1.4,-11);lab("RADIO COMUNITARIA","Pulsa E: escuchar",0xf2c744,"radio",6.2,2.5,-11,4.6);
+const zm=new T.Mesh(new T.OctahedronGeometry(.1),M(0xffd27a,.4,0xffb347));zm.visible=false;S.add(zm);
+const bk=new T.Mesh(new T.CylinderGeometry(.35,.35,8,12,1,true),new T.MeshBasicMaterial({color:0xffd27a,transparent:true,opacity:.1,side:T.DoubleSide,fog:false}));bk.visible=false;S.add(bk);
+const fx=new T.PointLight(0xff9a50,0,300);fx.position.set(20,30,-30);S.add(fx);const gl=new T.Mesh(new T.SphereGeometry(14,12,8),new T.MeshBasicMaterial({color:0xff8a40,transparent:true,opacity:0,fog:false}));gl.position.set(-95,12,-30);S.add(gl);
+// ciudad lejana, cielo y detalles
+for(let i=0;i<45;i++){const h=8+Math.random()*20,t2=bt.clone();t2.needsUpdate=true;t2.repeat.set(2,h/8);box(8,h,8,0,-38-Math.random()*85,h/2,-110+Math.random()*125,S,M(0xffffff,.95,0,{map:t2}))}
+for(let z=-8;z>-110;z-=16){box(.18,7,.18,0x4a3a2c,-2.8,3.5,z);box(1.6,.12,.12,0x4a3a2c,-2.8,6.6,z);box(.04,.04,16,0x222222,-2.1,6.55,z-8);box(.04,.04,16,0x222222,-3.5,6.55,z-8)}
+for(let i=0;i<40;i++){const r=.06+Math.random()*.1,m=new T.Mesh(new T.DodecahedronGeometry(r,0),M(i%3?0xcfc2a8:0x8c8780,.8));m.position.set(-2+Math.random()*10.5,r*.6,-20-Math.random()*100);S.add(m)}
+const sgm=new T.BufferGeometry(),svp=[];for(let i=0;i<500;i++){const a=Math.random()*6.28,e=Math.random()*1.4+.1;svp.push(Math.cos(a)*Math.cos(e)*280,Math.sin(e)*280,Math.sin(a)*Math.cos(e)*280)}sgm.setAttribute("position",new T.Float32BufferAttribute(svp,3));
+const stars=new T.Points(sgm,new T.PointsMaterial({color:0xffffff,size:2,sizeAttenuation:false,fog:false,transparent:true,opacity:0}));S.add(stars);
+const cc=document.createElement("canvas");cc.width=cc.height=64;{const x=cc.getContext("2d"),gr=x.createRadialGradient(32,32,2,32,32,32);gr.addColorStop(0,"rgba(255,255,255,.9)");gr.addColorStop(1,"rgba(255,255,255,0)");x.fillStyle=gr;x.fillRect(0,0,64,64)}
+const cct=new T.CanvasTexture(cc),CLD=[];for(let i=0;i<16;i++){const c=new T.Sprite(new T.SpriteMaterial({map:cct,transparent:true,opacity:.55,fog:false,depthWrite:false}));c.scale.set(60+Math.random()*50,18+Math.random()*10,1);c.position.set(Math.random()*400-200,55+Math.random()*35,Math.random()*300-250);S.add(c);CLD.push(c)}
+// personas
+function person(o){const g=new T.Group(),P={w:0,ph:0};
+const add=(geo,c,x,y,z,par=g)=>{const e=new T.Mesh(geo,M(c,.85));e.position.set(x,y,z);e.castShadow=true;par.add(e);return e};
+add(new T.CylinderGeometry(.19,.16,.6,12),o.shirt,0,1.15,0);add(new T.SphereGeometry(.2,12,8),o.shirt,0,1.42,0).scale.set(1,.5,.7);add(new T.CylinderGeometry(.05,.06,.1,8),o.skin,0,1.5,0);
+const hd=new T.Group();hd.position.set(0,1.64,0);g.add(hd);add(new T.SphereGeometry(.12,16,12),o.skin,0,0,0,hd).scale.set(.95,1.1,1);add(new T.SphereGeometry(.13,16,10,0,6.3,0,1.7),o.hair,0,.02,-.015,hd);
+add(new T.SphereGeometry(.016,6,6),0x222222,-.04,.01,.115,hd);add(new T.SphereGeometry(.016,6,6),0x222222,.04,.01,.115,hd);add(new T.ConeGeometry(.018,.045,6),o.skin,0,-.01,.128,hd).rotation.x=Math.PI/2;add(new T.SphereGeometry(.03,8,6),o.skin,-.12,0,0,hd);add(new T.SphereGeometry(.03,8,6),o.skin,.12,0,0,hd);
+add(new T.BoxGeometry(.045,.008,.01),0x1a120d,-.04,.05,.112,hd);add(new T.BoxGeometry(.045,.008,.01),0x1a120d,.04,.05,.112,hd);add(new T.BoxGeometry(.04,.007,.01),0x7a3b3b,0,-.05,.115,hd);add(new T.TorusGeometry(.17,.03,6,14),o.shirt,0,1.47,0).rotation.x=Math.PI/2;P.head=hd;
+const limb=(x,y,len,r,c,sk)=>{const p=new T.Group();p.position.set(x,y,0);g.add(p);add(new T.CylinderGeometry(r,r*.85,len,8),c,0,-len/2,0,p);if(sk)add(new T.SphereGeometry(r*1.05,8,6),sk,0,-len,0,p);return p};
+P.aL=limb(-.25,1.4,.6,.055,o.shirt,o.skin);P.aR=limb(.25,1.4,.6,.055,o.shirt,o.skin);P.lL=limb(-.1,.85,.85,.075,o.pants);P.lR=limb(.1,.85,.85,.075,o.pants);
+add(new T.BoxGeometry(.11,.07,.22),0x222222,0,-.85,.05,P.lL);add(new T.BoxGeometry(.11,.07,.22),0x222222,0,-.85,.05,P.lR);
+g.scale.setScalar(o.s);g.userData=P;S.add(g);return g}
+function anim(g,dt){const P=g.userData;P.ph+=P.w*dt*8;const w=P.w*.6,s=Math.sin(P.ph);P.lL.rotation.x=s*w;P.lR.rotation.x=-s*w;P.aL.rotation.x=-s*w*.7;P.aR.rotation.x=s*w*.7}
+const Z=person({skin:0xc99a73,shirt:0x4a7fa8,pants:0x3b3a40,hair:0x1f1712,s:.82});Z.userData.head.rotation.x=.3;
+const Fa=person({skin:0xb88a64,shirt:0x6b5b4a,pants:0x2d2f36,hair:0x3a332d,s:1.02});Fa.position.set(21,.15,-39.2);Fa.rotation.y=-Math.PI/2;
+const KS=[[0xc4553b,0x2a2a33],[0x6d9b5a,0x3a3a40],[0xd9b04a,0x2d3a4a]],KD=[Z];KS.forEach((c,i)=>KD.push(person({skin:[0xc99a73,0xb88a64,0xd2a67e][i],shirt:c[0],pants:c[1],hair:0x241a14,s:.78+i*.03})));
+const HM=[[4,-79],[6.5,-76],[-1,-80],[3,-84]];
+const IT=[[bag,"Su mochila escolar. Zayed dejó la escuela: le recuerda a su hermano."],[fr,"Una foto familiar. Mohamed, el hermano de Zayed, murió con tres primos aquel día en la playa."],[ball,"Un balón. Antes jugaban con él a diario en la playa."],[net,"Su familia vive del mar desde hace generaciones. Zayed ya no se siente seguro."],[st4,"Cuatro piedras para cuatro niños que murieron aquel día en la playa."]].map(([o,tx])=>{const m=new T.Mesh(new T.OctahedronGeometry(.07),M(0xe9b872,.4,0xe9b872));m.visible=false;S.add(m);return{o,tx,m,t:0,got:0}});
+// historia
+const ST=[
+{p:[2,1.2],ch:"La habitación",tx:"Zayed tiene 12 años y vive en el pequeño apartamento familiar, cerca de la playa. Su madre dice que ya no es el mismo. Dejó la escuela: le recuerda a su hermano.",q:"Zayed mira la mochila en silencio. ¿Qué haces?",o:[["Sentarte a su lado, sin hablar.",-.2,"Zayed se queda quieto contigo. Respira más despacio."],["Preguntarle por qué dejó la escuela.",.25,"Se encoge de hombros. No quiere hablar de eso."],["Mostrarle la foto de la pared.",.1,"Duda, pero la mira un momento."]]},
+{p:[0,-6]},
+{p:[0,-30],ch:"La calle",tx:"Muchos niños de Gaza perdieron a sus seres queridos y sus casas. Hay un Punto de Ayuda con cajas (marcador azul): pulsa F para llevar ayuda a las familias.",q:"Una vecina pregunta si ya está mejor. Zayed baja la mirada.",o:[["Decir que él hablará cuando quiera.",-.15,"La vecina asiente. Zayed te mira, aliviado."],["Decir que ya está mucho mejor.",.2,"Zayed aprieta los puños. Nadie le preguntó a él."],["Señalar el mar y cambiar de tema.",-.05,"Sonríe apenas. Pero el mar no es un tema fácil."]]},
+{p:[0,-30]},{p:[0,-40]},
+{p:[16,-40],ch:"El muelle",tx:"Su padre lo lleva a pescar: la familia vive del mar desde hace generaciones, pero Zayed ya no se siente seguro. Pesca con él: pulsa E cuando el flotador se hunda.",a:"fish",h:3},{p:[17.8,-39.4],tx:"Tu padre te enseña a jalar la red. Alterna A y D para jalar juntos.",a:"net",h:14},
+{p:[4,-41]},
+{p:[3,-80],ch:"La playa",tx:"Hace un año vino a jugar aquí. No lo empujes hacia la orilla. Mantén E y quédate a su lado.",h:5},
+{p:[3,-91],ch:"Los cuatro",tx:"Enciende una luz por cada niño: pulsa E cerca de Zayed.",a:"light",h:4},{p:[1,-111]},{p:[-5.5,-112.5],ch:"El dibujo",tx:"En los centros de apoyo se usa el dibujo para expresar lo que cuesta decir. Dibujen juntos.",a:"draw",h:1},{p:[-5,-111],ch:"El apoyo",tx:"Zayed es uno de los 400.000 niños de Gaza que, según la ONU, necesitan terapia. Recibe algo de ayuda, pero no la suficiente. Sus primos también cargan heridas profundas. Respiren juntos.",a:"calm",h:10}];
+const NM=["Mohamed, su hermano.","Un primo.","Otro primo.","Y otro primo. Cuatro niños que jugaban en la playa."];
+let helpPhase=false,helpT=60,lastK="",drawing=false,dn=0,dsel=0,nbOpen=false,typing=false,snapReq=null,shk=0,nbm=0,covN=0,talkN=0,maxI=0,MG,PD=[],PL,DL,mkey="";const LOG=[],SNP=[],BB=[],FB=[];let lives=3,pvv=0,al=0,nx=30,cov=0,ct=0,fv=0,aid=0,carry=null,ob="",cs=0,flt=1.5;const CD=[[.5,"El conflicto del año pasado mató a más de 500 niños en Gaza, según el reportaje."],[8.5,"Naciones Unidas dice que tanto fuerzas israelíes como milicianos palestinos pudieron haber cometido crímenes de guerra."],[16,"Esta es la historia de uno de esos niños: Zayed, 12 años."]];let mode="pre",st=.3,idx=0,arr=false,hold=0,started=false,ended=false,mem=0,yaw=0,pitch=0,t=0,sayT,pass=0,bc=0,turn="k",busy=false,cur=null,fs={n:0,tm:2,win:0},lit=0,V=true,spr=false,hm="",tap={};
+const keys={},pl=new T.Vector3(1,1.65,-71),RC=new T.Raycaster(),clk=new T.Clock();
+function say(x,ms=8000){const e=$("sub");e.textContent=x;e.style.opacity=1;clearTimeout(sayT);sayT=setTimeout(()=>e.style.opacity=0,ms)}
+let AC,seaG;function audio(){AC=new AudioContext();const b=AC.createBuffer(1,AC.sampleRate*2,AC.sampleRate),d=b.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;const s=AC.createBufferSource();s.buffer=b;s.loop=true;const f=AC.createBiquadFilter();f.type="lowpass";f.frequency.value=450;seaG=AC.createGain();s.connect(f);f.connect(seaG);seaG.connect(AC.destination);s.start()}
+function boom(v=.8){if(!AC)return;const n=AC.currentTime,o=AC.createOscillator(),a=AC.createGain();o.frequency.value=38;o.connect(a);a.connect(AC.destination);a.gain.setValueAtTime(v*.6,n);a.gain.exponentialRampToValueAtTime(.001,n+2.5);o.start();o.stop(n+2.6);const r=AC.createOscillator(),h=AC.createGain();r.frequency.value=3200;r.connect(h);h.connect(AC.destination);h.gain.setValueAtTime(v>.5?.012:0,n);h.gain.linearRampToValueAtTime(0,n+8);r.start();r.stop(n+8)}
+function rupture(){mode="cut";boom(.6);$("cut").style.opacity=1;$("hint").style.opacity=0;setTimeout(()=>{$("cp").textContent="Aquel día murieron cuatro niños. Hay cosas que no se juegan. Lo que sigue es lo que viven quienes se quedan.";$("cp").style.opacity=1},700);setTimeout(()=>{$("cp").style.opacity=0;enterNow();$("cut").style.transition="opacity 1.2s";$("cut").style.opacity=0},5200)}
+function enterNow(){mode="now";KD.slice(1).forEach(k=>k.visible=false);Z.position.set(2.6,0,2.2);pl.set(-1.2,1.65,2.4);yaw=-1.1;st=.3;idx=0;arr=false;ball.position.set(-3,.15,-2.5);bv.set(0,0,0);$("mem").textContent="Memorias 0 / "+IT.length;$("ch").textContent="Hoy";IT.forEach(i=>i.m.visible=true);helpPhase=true;helpT=60;say("Un año después. Zayed descansa en casa. Tienes 1 minuto para ayudar a las familias: sal a la calle, al Punto de Ayuda. Enter: terminar antes.",10000)}
+$("go").onclick=()=>{$("intro").style.display="none";started=true;V=$("oV").checked;try{audio();musInit()}catch(e){}R.domElement.requestPointerLock&&R.domElement.requestPointerLock();
+KD.forEach((k,i)=>k.position.set(HM[i][0],0,HM[i][1]));$("ch").textContent="Antes · la playa";if($("oS").checked)enterNow();else{mode="ci";ct=0;pl.set(2,7.5,-30);yaw=Math.PI/2;say("Enter: saltar introducción",3000)}};
+document.addEventListener("click",()=>{if(started&&!ended&&!cur&&!document.pointerLockElement&&R.domElement.requestPointerLock)R.domElement.requestPointerLock()});
+addEventListener("keydown",e=>{
+if(typing){if(e.code=="Enter"){const v=$("ti").value;closeTalk();talk(v)}else if(e.code=="Escape")closeTalk();return}
+if(drawing){if(/^Digit[1-4]$/.test(e.code))dsel=+e.code.slice(5)-1;return}
+if(e.code=="KeyJ"&&started&&mode!="ci"&&!e.repeat){toggleNB();return}
+if(nbOpen){if(e.code=="Escape")toggleNB();return}
+if(e.code=="KeyT"&&mode=="now"&&started&&!ended){e.preventDefault();openTalk();return}
+keys[e.code]=1;if(!e.repeat)tap[e.code]=1;if(e.code=="Space")e.preventDefault()});addEventListener("keyup",e=>keys[e.code]=0);
+addEventListener("mousemove",e=>{if(document.pointerLockElement){yaw-=e.movementX*.0022;pitch=cl(pitch-e.movementY*.0022,-1.3,1.3)}});
+function resize(){R.setSize(innerWidth,innerHeight);C.aspect=innerWidth/innerHeight;C.updateProjectionMatrix()}addEventListener("resize",resize);resize();
+function ask(s){cur=s;busy=true;document.exitPointerLock&&document.exitPointerLock();const d=$("dlg");d.style.display="block";d.innerHTML="<p><i>"+s.q+"</i></p>"+s.o.map((o,i)=>"<p onclick=\"pick("+i+")\"><b>"+(i+1)+"</b> · "+o[0]+"</p>").join("")+"<p style=\"font-size:17px;opacity:.8\">O pulsa <b>T</b> y escribe con tus propias palabras (por ejemplo: estoy aquí contigo, te escucho…)</p>"}
+function pg(n){$("p1").style.display=n==1?"block":"none";$("p2").style.display=n==2?"block":"none"}
+function hurt(m){lives--;if(lives<=0){lives=3;st=.4;m="Descansen un momento y retomen con calma."}say(m,6000)}
+function pick(i){const s=cur,o=s.o[i];st=cl(st+o[1],0,1);LOG.push({q:o[0],r:o[2]});talkN++;$("dlg").style.display="none";say(o[2],7000);cur=null;busy=false;arr=false;idx++}
+function face(a,b){Z.rotation.y=Math.atan2(b.x-a.x,b.z-a.z)}
+function pre(dt,f){
+ball.position.addScaledVector(bv,dt);bv.x*=1-1.2*dt;bv.z*=1-1.2*dt;bv.y-=12*dt;if(ball.position.y<.15){ball.position.y=.15;bv.y=Math.abs(bv.y)>1.5?-bv.y*.4:0}ball.position.x=cl(ball.position.x,-6,8.2);bc-=dt;
+const dp=Math.hypot(ball.position.x-pl.x,ball.position.z-pl.z);hm="Espacio: patear el balón";ob="Juega con ellos: patea el balón ("+pass+"/8 pases)";
+if(tap.Space&&dp<2.6&&bc<0){bv.set(f[0]*6.5,3,f[1]*6.5);bc=.7;turn="p"}
+let n=0,nd=99;KD.forEach((k,i)=>{const d=Math.hypot(ball.position.x-k.position.x,ball.position.z-k.position.z);if(d<nd){nd=d;n=i}});
+KD.forEach((k,i)=>{const P=k.userData,tg=(i==n&&turn=="p"&&bc<0)?ball.position:new T.Vector3(HM[i][0],0,HM[i][1]),dx=tg.x-k.position.x,dz=tg.z-k.position.z,dd=Math.hypot(dx,dz);
+if(dd>.6){k.position.x+=dx/dd*2.8*dt;k.position.z+=dz/dd*2.8*dt;k.rotation.y=Math.atan2(dx,dz);P.w=1}else P.w=0;
+if(i==n&&turn=="p"&&bc<0&&dd<.9){const ex=pl.x-ball.position.x,ez=pl.z-ball.position.z,l=Math.hypot(ex,ez)||1;bv.set(ex/l*5.5,2.5,ez/l*5.5);bc=1.2;turn="k";pass++;$("mem").textContent="Pases "+pass+" / 8";st=cl(st-.03,0,1);if(pass>=8)rupture()}anim(k,dt)})}
+function now(dt){
+const zp=Z.position,s=ST[idx],P=Z.userData,d=Math.hypot(pl.x-zp.x,pl.z-zp.z),near=d<4.8;let up=0;hm="";if(helpPhase){helpTick(dt,d,s,near);return}
+if(!arr){const dx=s.p[0]-zp.x,dz=s.p[1]-zp.z,dd=Math.hypot(dx,dz);P.w=0;
+if(dd<.4){if(!(s.h||s.q))idx++;else{arr=true;hold=0;lit=lit;if(s.ch)$("ch").textContent=s.ch;say(s.tx,10000);if(s.q)ask(s);if(s.a=="fish")fs={n:0,tm:2.5,win:0};if(s.a=="draw")openDraw()}}
+else if(d<9&&st<.75){zp.x+=dx/dd*1.5*dt;zp.z+=dz/dd*1.5*dt;Z.rotation.y=Math.atan2(dx,dz);P.w=1}else face(zp,pl)}else face(zp,pl);
+if(d<1.3)up+=.14;if(d>10&&!(arr&&s.a=="help"))up+=.05;if(spr&&d<9)up+=.16;
+const hug=arr&&s.h&&!s.a&&near&&keys.KeyE;
+if(hug){up-=.2;if(st<.8)hold+=dt}else if(!s.a&&!busy)hold=Math.max(0,hold-dt*.5);
+if(!hug&&up==0&&d>1.6&&d<7)up-=.05;
+if(arr&&s.h&&!s.a&&near)hm="Mantén E: quedarte a su lado";
+if(arr&&s.a=="fish"){fl.visible=true;hm="E cuando el flotador se hunda";fs.tm-=dt;
+if(fs.tm<=0&&fs.win<=0){fs.win=.9;say("¡Pica!",1200)}
+if(fs.win>0){fs.win-=dt;fl.position.y=-.4;if(tap.KeyE){fs.n++;hold=fs.n;st=cl(st-.12,0,1);fs.win=0;fs.tm=2+Math.random()*2;say("¡Pescado! "+fs.n+" de 3",1800)}else if(fs.win<=0){fs.tm=2+Math.random()*2;say("Se escapó. Paciencia.",1500)}}
+else{fl.position.y=-.1+Math.sin(t*3)*.02;if(tap.KeyE){fs.tm+=1;say("Demasiado pronto…",1200)}}}
+if(arr&&s.a=="light"){hm="E: encender una luz";if(near&&tap.KeyE&&lit<4){LA[lit].visible=true;LA[lit].r=1;lit++;hold=lit;ll.intensity=.1;st=cl(st-.1,0,1);say(NM[lit-1],5000)}}
+st=cl(st+up*dt,0,1);
+if(st>=1){st=.6;hold=0;hurt("Zayed se cierra. Respira y dale espacio.");pl.x+=(pl.x-zp.x)*.5;pl.z+=(pl.z-zp.z)*.5}
+if(arr&&s.h&&hold>=s.h){arr=false;hold=0;fl.visible=false;if(idx==ST.length-1){ended=true;setTimeout(()=>{$("end").style.display="flex";document.exitPointerLock&&document.exitPointerLock()},9000)}else{idx++;say("Zayed siente que no está solo.",4000)}}
+C.updateMatrixWorld();RC.setFromCamera({x:0,y:0},C);let gz=0;
+for(const it of IT){if(it.got)continue;const h=RC.intersectObject(it.o,true);if(h.length&&h[0].distance<7){it.t+=dt;gz=Math.max(gz,it.t/1.2);if(it.t>1.2){it.got=1;it.m.visible=false;mem++;snap(it.tx,1);$("mem").textContent="Memorias "+mem+" / "+IT.length;say(it.tx,9000)}}else it.t=Math.max(0,it.t-dt*2)}
+const rp=hug?hold/s.h:gz;$("ring").style.setProperty("--p",rp);$("ring").style.opacity=rp>.01?1:0;
+zp.y=(zp.x>8.5&&Math.abs(zp.z+40)<1.6)?.15:0;anim(Z,dt);Z.rotation.z=st>.55&&V?Math.sin(t*35)*(st-.55)*.12:0;
+Fa.userData.aR.rotation.x=-.6+Math.sin(t*1.5)*.15;extras(dt,d,s,near)}
+function extras(dt,d,s,near){
+zm.visible=true;zm.position.set(Z.position.x,1.75+Math.sin(t*3)*.05,Z.position.z);zm.rotation.y=t*2;bk.visible=!arr;bk.position.set(s.p[0],4,s.p[1]);
+ob=!arr?"Camina junto a Zayed (a 2-6 m)":busy?"Elige qué decirle: 1, 2 o 3":s.a=="fish"?"Pesca 3 peces con su padre":s.a=="help"?"Ayuda a las familias (F) · Enter para continuar":s.a=="net"?"Jala la red: alterna A y D":s.a=="draw"?"Dibuja con Zayed: elige 1-4 y haz clic":s.a=="light"?"Enciende 4 luces junto a la orilla":s.a=="calm"?"Respira al ritmo del círculo":"Quédate a su lado: mantén E";
+$("obj").textContent="Objetivo: "+ob+" · Zayed a "+d.toFixed(0)+" m";
+nx-=dt;if(nx<=0&&al<=0&&!busy&&!helpPhase&&!(arr&&(s.a=="fish"||s.a=="calm"||s.a=="net"||s.a=="draw"||s.a=="help"))){al=7;cov=0;nx=40+Math.random()*25;boom(.3);$("al").textContent="¡RUIDO FUERTE! Mantén C junto a Zayed para cubrirlo"}
+if(al>0){al-=dt;$("al").style.display="block";$("al").style.opacity=Math.sin(t*14)>0?1:.5;if(keys.KeyC&&d<3.2){cov+=dt;st=cl(st-.25*dt,0,1);hm="Cubriéndolo…"}else st=cl(st+.12*dt,0,1);if(al<=0){$("al").style.display="none";if(cov<2.5)hurt("Zayed se asustó solo. La próxima vez, cúbrelo con C.");else{covN++;say("Lo protegiste. Zayed respira.",4000)}}}
+if(arr&&s.a=="net"){hm="Alterna A y D para jalar";const k=tap.KeyA?"A":tap.KeyD?"D":"";if(k&&k!=lastK){lastK=k;hold++;st=cl(st-.01,0,1);net.position.x=19-hold*.18}}
+if(arr&&s.a=="calm"){hm="Mantén ESPACIO al inhalar, suelta al exhalar";const gd=(Math.sin(t*1.1)+1)/2;pvv=cl(pvv+(keys.Space?1:-1)*1.3*dt,0,1);const ok=Math.abs(pvv-gd)<.22;if(ok){hold+=dt;st=cl(st-.1*dt,0,1)}else hold=Math.max(0,hold-dt*.3);$("br").style.display="block";$("bg").style.transform="scale("+(.4+gd*.9)+")";$("bp").style.transform="scale("+(.4+pvv*.9)+")";$("bp").style.borderColor=ok?"#6fbf73":"#e9b872"}else $("br").style.display="none";
+if(idx>=ST.length-2&&!KD[1].visible)KD.slice(1).forEach((k,i)=>{k.visible=true;k.position.set(-7.5+i*1.5,0,-114.8);k.rotation.y=0});
+const near2=(a,r)=>Math.hypot(a.x-pl.x,a.z-pl.z)<r;CR.forEach(c=>{if(!c.held&&!c.done&&near2(c.m.position,3.2)&&!carry&&!hm)hm="F: recoger "+c.n});
+FM.forEach((p,i)=>{FMk[i].visible=!!carry&&carry.i==i;FMk[i].rotation.y=t*2;if(carry&&carry.i==i&&near2(p.position,3)&&!hm)hm="F: entregar "+carry.n});
+CR.forEach(c=>c.bm.visible=!c.held&&!c.done);FB2.forEach((b,i)=>b.visible=!!carry&&carry.i==i);
+let tg=null,tx2="";if(aid<NA&&(helpPhase||(idx>=1&&idx<=4))&&!(arr&&(s.a=="calm"||s.a=="draw"||s.a=="fish"||s.a=="net"))){if(ELS.s==1){tg=TENT;tx2="Lleva a la anciana al Punto de Ayuda (despacio)"}else if(carry){tg=FM[carry.i].position;tx2="Lleva la caja de "+carry.n+" a la familia (marcador azul)"}else{const c=CR.filter(c=>!c.held&&!c.done).sort((a,b)=>a.m.position.distanceTo(pl)-b.m.position.distanceTo(pl))[0];if(c){tg=c.m.position;tx2="Ayuda: recoge la caja de "+c.n+" (F)"}else if(ELS.s==0){tg=EL.position;tx2="Ayuda a la anciana (F)"}}}
+const ao=$("aobj");if(tg){const dx=tg.x-pl.x,dz=tg.z-pl.z,xc=dx*Math.cos(yaw)-dz*Math.sin(yaw),zc=-dx*Math.sin(yaw)-dz*Math.cos(yaw);$("arw").style.transform="rotate("+Math.atan2(xc,zc)+"rad)";$("atx").textContent=tx2+" · "+Math.hypot(dx,dz).toFixed(0)+" m";ao.style.display="block"}else ao.style.display="none";
+elb.visible=ELS.s==0;
+if(ELS.s==1){const P=EL.userData,dx=pl.x-EL.position.x,dz=pl.z-EL.position.z,dd=Math.hypot(dx,dz);P.w=0;if(dd>2.2&&!spr){EL.position.x+=dx/dd*1.6*dt;EL.position.z+=dz/dd*1.6*dt;EL.rotation.y=Math.atan2(dx,dz);P.w=1}else if(spr&&dd<9&&!hm)hm="Ve despacio: ella no puede correr";anim(EL,dt);
+if(Math.hypot(EL.position.x-4.5,EL.position.z+9)<3.6){ELS.s=2;aid++;$("aid").textContent="Ayuda entregada "+aid+" / 7";say("La anciana llega al Punto de Ayuda: recibirá atención y descanso.",7000);P.w=0;anim(EL,dt)}}
+if(near2(RAD,3.4)&&!hm){hm="E: escuchar la radio comunitaria";if(tap.KeyE){const m=RM[ri%RM.length];ri++;say(m,9000);LOG.push({q:"(Radio)",r:m});st=cl(st-.03,0,1)}}
+if(arr&&s.a=="help"){if(!hm)hm="Ayuda con F · Enter: continuar (tras 3 ayudas)";if(aid>=NA||(aid>=3&&tap.Enter))hold=1}
+if(tap.KeyH&&d<3&&!busy&&!helpPhase){if(st<.7){st=cl(st-.1,0,1);say("Le ofreces la mano. Zayed la toma un momento.",5000);LOG.push({q:"(Gesto) ofrecer la mano",r:"Zayed la tomó."})}else{st=cl(st+.1,0,1);say("Zayed se aparta: ahora no quiere contacto. Respeta su espacio.",5500);LOG.push({q:"(Gesto) ofrecer la mano",r:"Zayed se apartó; hay que respetar su espacio."})}}
+if(tap.KeyF){if(!carry){const c=CR.find(c=>!c.done&&!c.held&&near2(c.m.position,3.2));if(!c&&ELS.s==0&&near2(EL.position,3.4)){ELS.s=1;say("La anciana toma tu brazo. Llévala al Punto de Ayuda sin correr: ella no puede.",6500)}if(c){c.held=1;c.m.visible=false;carry=c;say("Llevas "+c.n+". Entrégalo a la familia con el marcador azul.",4500)}}
+else if(near2(FM[carry.i].position,3)){carry.done=1;aid++;FM[carry.i].userData.aR.rotation.x=-2.6;st=cl(st-.06,0,1);say(carry.t,7000);carry=null;$("aid").textContent="Ayuda entregada "+aid+" / 7"}}}
+const rnd=a=>a[Math.floor(Math.random()*a.length)];
+function openTalk(){typing=true;$("tk").style.top=cur?"78%":"50%";for(const k in keys)keys[k]=0;$("tk").style.display="block";document.exitPointerLock&&document.exitPointerLock();$("ti").value="";setTimeout(()=>$("ti").focus(),30)}
+function closeTalk(){typing=false;$("tk").style.display="none";$("ti").blur()}
+function talk(x0){const x=x0.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");if(!x.trim())return;let d=0,r;const h=re=>re.test(x);
+if(h(/olvid|supera|ya paso|tienes que|debes|no llores|deja de|ya esta|se fuerte|cobarde|no pasa nada|no fue nada|exager/)){d=.2;r=rnd(["Zayed aprieta los labios y mira al suelo.","Se encoge. Eso no lo hizo sentir mejor.","Zayed se aparta un paso."])}
+else if(h(/hermano|mohamed|playa|murier|ataque|bomba/)){if(st<.45){d=-.1;r="Por primera vez, Zayed no aparta la mirada. Tiembla un poco, pero se queda."}else{d=.18;r="Zayed baja la cabeza. Aún no puede hablar de eso."}}
+else if(h(/estoy aqui|contigo|no estas solo|te escucho|aqui estoy|acompan|tranquil|respira|con calma|cuando quieras|lo siento|te entiendo|te creo|no tienes que hablar/)){d=-.14;r=rnd(["Zayed asiente despacio. Sus hombros bajan un poco.","Te mira un momento. Parece más tranquilo.","Zayed respira hondo, contigo."])}
+else if(h(/pesca|mar|barco|barca|papa|padre/)){d=st<.5?-.06:.05;r=st<.5?"Zayed casi sonríe al pensar en las barcas.":"Zayed mira hacia el mar y se queda en silencio."}
+else if(h(/escuela|clase|estudi|colegio/)){d=.12;r="Zayed se encoge de hombros. No quiere hablar de eso."}
+else if(h(/juego|balon|futbol|pelota|jugar/)){d=st<.5?-.05:.08;r="Zayed te mira, pensativo, como si recordara algo que no puede decir."}
+else if(h(/dibuj|ayuda|terapia|psicolog|ayudar/)){d=-.08;r="Zayed asiente: eso sí le suena posible."}
+else if(h(/gracias|amigo|amiga|quiero ayudar|abrazo/)){d=-.1;r="Zayed aprieta tu mano un instante."}
+else r="Zayed te escucha en silencio.";
+st=cl(st+d,0,1);say(r,6500);LOG.push({q:x0,r});talkN++;if(cur){cur=null;$("dlg").style.display="none";busy=false;arr=false;idx++}}
+function snap(cap,m){const o={cap,mem:m,src:null};SNP.push(o);snapReq=o;const f=$("fl");f.style.opacity=.8;setTimeout(()=>f.style.opacity=0,120)}
+function toggleNB(){nbOpen=!nbOpen;$("nb").style.display=nbOpen?"block":"none";if(nbOpen){document.exitPointerLock&&document.exitPointerLock();renderNB()}}
+function renderNB(){const ph=SNP.filter(x=>x.src),ok=mode=="now"||ended;
+const F=[[0,"16 de julio de 2014, hacia las 15:30: cuatro niños de la familia Bakr (Ismail, Zakaria, Ahed y Mohamed, de 9 a 11 años) murieron en un ataque israelí en la playa pesquera de la ciudad de Gaza, mientras jugaban. Los medios los describen como primos; el reportaje que inspira esta experiencia habla del hermano de Zayed y tres primos. Los nombres de los sobrevivientes varían según el medio (por ejemplo Muntasser o Montaser, de 11 o 12 años): esta experiencia sigue el reportaje y no pretende retratar a ningún niño real en detalle."],
+[2,"La guerra de 2014 mató al menos a 551 niños palestinos y dejó unos 2.956 heridos (UNICEF/OCHA)."],
+[5,"UNICEF estimó que unos 400.000 niños de Gaza mostraban señales de angustia (pesadillas, miedo a separarse de sus padres) y necesitaban apoyo psicosocial."],
+[8,"Israel calificó el hecho de «trágico accidente» y dijo que creyó que los niños eran milicianos; cerró su investigación en 2015 sin cargos. Un informe de la ONU, testigos y varias organizaciones (Adalah, Al Mezan, PCHR) cuestionaron esa conclusión, y la Corte Suprema de Israel rechazó la apelación en 2022."],
+[9,"Según Adalah, una revisión posterior mostró que los misiles se lanzaron sin identificar antes a los objetivos."],
+[11,"En 2015, el padre de un niño sobreviviente dijo a ABC News que su hijo necesitaba una psicoterapia especial que no se encontraba en Gaza."],[11,"Los programas de apoyo psicosocial usan, entre otras técnicas, artes expresivas (dibujo) y relajación (respiración), como los minijuegos de esta sala (UNICEF/OCHA)."],[11,"Seis meses después del alto el fuego, casi 300.000 niños aún necesitaban apoyo psicosocial. A fines de 2015 se había llegado al 40 % de los identificados (UNICEF/OCHA): la ayuda no alcanzaba."]];
+const TK=[["Fotografía 3 cosas (P o mirando con atención)",ph.length>=3],["Completa las 7 ayudas (F)",aid>=7],["Escucha la radio comunitaria (E)",ri>=1],["Protege a Zayed 2 veces (C)",covN>=2],["Habla con Zayed 3 veces (1-2-3 o T)",talkN>=3],["Reúne todas las memorias",mem>=IT.length]];
+let h="<div class=pg><h2 style='margin:0;color:#8a5a2b'>Cuaderno de campo</h2><p style='font-size:16px'>J para cerrar · P toma una foto · T para hablarle</p>";
+h+="<h3>Fotos y memorias ("+ph.length+")</h3><div class=gr>"+(ph.map(p=>"<figure><img width=240 src='"+p.src+"'><figcaption>"+(p.mem?"<b>Memoria.</b> ":"")+p.cap+"</figcaption></figure>").join("")||"<i>Aún no hay fotos. Mira con atención lo que brilla o pulsa P.</i>")+"</div>";
+h+="<h3>Diario de conversaciones</h3>"+(LOG.map(l=>"<p>Tú: «"+l.q+"»<br><i>"+l.r+"</i></p>").join("")||"<i>Aún no le has dicho nada. Las reacciones de Zayed son simbólicas, no sus palabras reales.</i>");
+h+="<h3>Tareas</h3>"+TK.map(t=>"<div>"+(t[1]?"☑ ":"☐ ")+t[0]+"</div>").join("");
+h+="<h3>Archivo verificado</h3>"+F.map(f=>ok&&(maxI>=f[0]||ended)?"<p>"+f[1]+"</p>":"<p>🔒 <i>Se desbloquea al avanzar en la historia.</i></p>").join("")+(aid>0?"<p>Tras la guerra de 2014, UNICEF repartió miles de mantas, kits de higiene y bidones de agua en refugios colectivos.</p>":"");
+h+="<h3>Fuentes</h3><p style='font-size:15px'>CNN (17/07/2014), Al Jazeera (12/06/2015 y 30/04/2022), ABC News (2015), The Forward (2015), The National, Human Rights Watch (2017), Adalah, ReliefWeb/OCHA, UNICEF y OCHA «Gaza two years on», ONU/UNISPAL. Los hechos de esta experiencia siguen el reportaje de origen; las cifras provienen de estas fuentes.</p></div>";$("nb").innerHTML=h}
+// musica generativa
+const mtof=n=>440*Math.pow(2,(n-69)/12);
+const MP={ci:{r:45,ch:[0,7,12],sc:[0,3,7],pad:.04,cut:260,pr:.12,pv:.03,w:"sine"},pre:{r:48,ch:[0,7,16],sc:[0,2,4,7,9],pad:.05,cut:1000,pr:.75,pv:.09,w:"triangle"},cut:{r:48,ch:[0,7,16],sc:[0],pad:0,cut:200,pr:0,pv:0,w:"sine"},n1:{r:45,ch:[0,7,15],sc:[0,3,5,7,10],pad:.05,cut:500,pr:.3,pv:.08,w:"triangle"},n2:{r:50,ch:[0,7,14],sc:[0,2,3,7,9],pad:.05,cut:700,pr:.45,pv:.08,w:"triangle"},n3:{r:43,ch:[0,7,12],sc:[0,3,7],pad:.06,cut:350,pr:.15,pv:.07,w:"sine"},n4:{r:53,ch:[0,7,16],sc:[0,2,4,6,7,9],pad:.06,cut:1100,pr:.5,pv:.09,w:"triangle"},n5:{r:48,ch:[0,7,16],sc:[0,2,4,7,9],pad:.08,cut:1400,pr:.35,pv:.08,w:"sine"}};
+function musInit(){MG=AC.createGain();MG.gain.value=.22;MG.connect(AC.destination);DL=AC.createDelay();DL.delayTime.value=.42;const fb=AC.createGain();fb.gain.value=.35;DL.connect(fb);fb.connect(DL);DL.connect(MG);
+PL=AC.createBiquadFilter();PL.type="lowpass";const pg=AC.createGain();pg.gain.value=0;PL.connect(pg);pg.connect(MG);PL.pg=pg;
+for(let i=0;i<3;i++){const o=AC.createOscillator();o.type="triangle";o.frequency.value=100;o.detune.value=(i-1)*7;o.connect(PL);o.start();PD.push(o)}
+setInterval(()=>{const p=MP[mkey];if(!p||!AC||Math.random()>p.pr*.6)return;pluck(mtof(p.r+12+rnd(p.sc)+(Math.random()<.3?12:0)),p.pv,p.w)},950)}
+function pluck(f,v,w){const n=AC.currentTime,o=AC.createOscillator(),g=AC.createGain();o.type=w;o.frequency.value=f;g.gain.setValueAtTime(0,n);g.gain.linearRampToValueAtTime(v,n+.02);g.gain.exponentialRampToValueAtTime(.001,n+2.2);o.connect(g);g.connect(MG);g.connect(DL);o.start(n);o.stop(n+2.3)}
+function setMus(k){if(!AC||!MG||k==mkey)return;mkey=k;const p=MP[k],n=AC.currentTime;PD.forEach((o,i)=>{o.type=p.w=="sawtooth"?"sawtooth":"triangle";o.frequency.setTargetAtTime(mtof(p.r+p.ch[i]),n,1.5)});PL.pg.gain.setTargetAtTime(p.pad,n,k=="cut"?.05:1.5);PL.frequency.setTargetAtTime(p.cut,n,1.2)}
+// bombas sobre la ciudad lejana (sin personas)
+function whistle(){if(!AC)return;const n=AC.currentTime,o=AC.createOscillator(),g=AC.createGain();o.type="sawtooth";o.frequency.setValueAtTime(1500,n);o.frequency.exponentialRampToValueAtTime(220,n+1.9);g.gain.setValueAtTime(.01,n);g.gain.linearRampToValueAtTime(.025,n+1.5);g.gain.linearRampToValueAtTime(0,n+1.95);o.connect(g);g.connect(AC.destination);o.start();o.stop(n+2)}
+function bombs(dt){if(ct>3&&ct>nbm){const g=new T.Group(),mt=M(0x3a3d40,.5,0,{metalness:.6});g.add(new T.Mesh(new T.CylinderGeometry(.35,.35,2,10),mt));const n=new T.Mesh(new T.ConeGeometry(.35,.8,10),mt);n.position.y=-1.4;n.rotation.x=Math.PI;g.add(n);
+for(let i=0;i<4;i++){const f=new T.Mesh(new T.BoxGeometry(.05,.6,.5),mt);f.position.set(Math.cos(i*1.57)*.4,1,Math.sin(i*1.57)*.4);f.rotation.y=-i*1.57;g.add(f)}
+const tr=new T.Mesh(new T.CylinderGeometry(.08,.5,14,8,1,true),new T.MeshBasicMaterial({color:0xffa040,transparent:true,opacity:.45,fog:false}));tr.position.y=8;g.add(tr);g.scale.setScalar(2.6);g.position.set(-28-Math.random()*35,85,-52+Math.random()*40);S.add(g);BB.push(g);whistle();nbm=ct+2.6+Math.random()*1.6}
+for(let i=BB.length-1;i>=0;i--){const g=BB[i];g.position.y-=36*dt;if(g.position.y<4){const m=new T.Mesh(new T.SphereGeometry(1,14,10),new T.MeshBasicMaterial({color:0xffa040,transparent:true,opacity:1,fog:false}));m.position.set(g.position.x,9,g.position.z);S.add(m);FB.push({m,t:0});fv=1;fx.position.set(g.position.x+14,16,g.position.z);shk=.45;setTimeout(()=>boom(.3),450);S.remove(g);BB.splice(i,1)}}
+for(let i=FB.length-1;i>=0;i--){const b=FB[i];b.t+=dt;b.m.scale.setScalar(1+b.t*16);b.m.position.y+=dt*3;b.m.material.opacity=Math.max(0,1-b.t/1.8);b.m.material.color.setRGB(Math.max(.2,1-b.t*.45),Math.max(.15,.63-b.t*.3),Math.max(.1,.25-b.t*.1));if(b.t>1.8){S.remove(b.m);FB.splice(i,1)}}}
+function openDraw(){drawing=true;dn=0;document.exitPointerLock&&document.exitPointerLock();$("dw").style.display="flex";dcx().clearRect(0,0,560,320);$("dn").textContent="0 / 4"}
+const dcx=()=>$("dc").getContext("2d");
+function shape(x,k,px,py,c){x.fillStyle=c;x.strokeStyle=c;x.lineWidth=4;if(k==0){x.beginPath();x.arc(px,py,26,0,6.3);x.fill();for(let i=0;i<8;i++){x.beginPath();x.moveTo(px+Math.cos(i*.785)*34,py+Math.sin(i*.785)*34);x.lineTo(px+Math.cos(i*.785)*46,py+Math.sin(i*.785)*46);x.stroke()}}
+else if(k==1){x.beginPath();x.moveTo(px-40,py);x.lineTo(px+40,py);x.lineTo(px+25,py+22);x.lineTo(px-25,py+22);x.fill();x.beginPath();x.moveTo(px,py-4);x.lineTo(px,py-48);x.lineTo(px+30,py-4);x.fill()}
+else if(k==2){x.fillRect(px-30,py-10,60,40);x.beginPath();x.moveTo(px-38,py-10);x.lineTo(px,py-42);x.lineTo(px+38,py-10);x.fill()}
+else{x.beginPath();x.moveTo(px,py+24);x.bezierCurveTo(px-50,py-10,px-20,py-40,px,py-14);x.bezierCurveTo(px+20,py-40,px+50,py-10,px,py+24);x.fill()}}
+$("dc").onclick=e=>{if(!drawing)return;const r=$("dc").getBoundingClientRect(),px=(e.clientX-r.left)*560/r.width,py=(e.clientY-r.top)*320/r.height,x=dcx();shape(x,dsel,px,py,["#f2a93b","#3c7fb8","#c0503c","#d9546c"][dsel]);dn++;$("dn").textContent=dn+" / 4";
+setTimeout(()=>{if(drawing){shape(x,Math.floor(Math.random()*4),60+Math.random()*440,60+Math.random()*200,"#6a5acd");say("Zayed dibuja algo en el papel.",2500)}},500);
+if(dn>=4)setTimeout(()=>{SNP.push({cap:"Dibujo compartido con Zayed",mem:0,src:$("dc").toDataURL("image/png")});drawing=false;$("dw").style.display="none";hold=1;st=cl(st-.15,0,1);say("Dibujar ayuda a decir lo que cuesta decir. Zayed sonríe, apenas.",7000)},1400)};
+function helpTick(dt,d,s,near){helpT-=dt;extras(dt,d,s,near);bk.visible=false;zm.visible=false;const m=Math.max(0,Math.ceil(helpT));$("obj").textContent="Tiempo para ayudar: "+Math.floor(m/60)+":"+String(m%60).padStart(2,"0")+" · Zayed descansa en casa · Enter: terminar";if(helpT<=0||tap.Enter||aid>=NA)helpEnd()}
+function helpEnd(){helpPhase=false;if(carry){carry.held=0;carry.m.visible=true;carry=null}if(ELS.s==1){ELS.s=0;EL.position.set(-3.8,0,-37);EL.userData.w=0}pl.set(-1.2,1.65,2.4);yaw=-1.1;pitch=0;nx=25;st=.3;say(aid>=NA?"Todas las ayudas entregadas. Vuelves con Zayed.":"Se acabó el tiempo. Vuelves a casa con Zayed. Podrás seguir ayudando por el camino.",8000)}
+function ci(dt){ct+=dt;hm="";yaw=Math.PI/2+Math.sin(ct*.15)*.08;pitch=.12;bombs(dt);
+if(ct>flt){fv=1;setTimeout(()=>boom(.2),700+Math.random()*600);flt=ct+1.8+Math.random()*2.5}
+if(cs<CD.length&&ct>CD[cs][0]){say(CD[cs][1],5800);cs++}
+if(ct>25||tap.Enter){mode="pre";pl.set(1,1.65,-71);yaw=0;pitch=0;$("sub").style.opacity=0;say("Un día cualquiera. Patea el balón con ellos: Espacio.",7000)}}
+function update(dt){
+yaw+=((keys.ArrowLeft?1:0)-(keys.ArrowRight?1:0))*1.6*dt;pitch=cl(pitch+((keys.ArrowUp?1:0)-(keys.ArrowDown?1:0))*1.2*dt,-1.3,1.3);
+const f=[-Math.sin(yaw),-Math.cos(yaw)],r=[Math.cos(yaw),-Math.sin(yaw)],mx=(keys.KeyD?1:0)-(keys.KeyA?1:0),mz=(keys.KeyW?1:0)-(keys.KeyS?1:0),mv=mx||mz;spr=(keys.ShiftLeft||keys.ShiftRight)&&mz>0;const sp2=spr?6:3.2,l=Math.hypot(mx,mz)||1;
+if(mode!="cut"&&mode!="ci"){pl.x+=(r[0]*mx+f[0]*mz)/l*sp2*dt;pl.z+=(r[1]*mx+f[1]*mz)/l*sp2*dt}
+if(pl.z>-4.6){if(pl.z>-3.6){pl.x=cl(pl.x,-3.6,3.6);pl.z=Math.min(pl.z,3.6)}else pl.x=cl(pl.x,-1,1)}
+if(pl.x>8.4&&(pl.z>-38.6||pl.z<-41.4))pl.x=8.4;pl.x=cl(pl.x,-8,23);
+if(mode=="pre")pre(dt,f);else if(mode=="now")now(dt);else if(mode=="ci")ci(dt);
+if(tap.KeyP&&(mode=="now"||mode=="pre")&&SNP.length<30)snap($("ch").textContent,0);if(mode=="now")maxI=Math.max(maxI,idx);if(cur)["Digit1","Digit2","Digit3"].forEach((c,i)=>{if(tap[c]&&cur&&cur.o[i])pick(i)});
+if(mode=="pre")$("obj").textContent="Objetivo: "+ob;else if(mode!="now")$("obj").textContent="";$("hint").textContent=hm;$("hint").style.opacity=hm?1:0;
+$("fill").style.width=(100-st*100)+"%";$("cl").textContent="Calma de Zayed "+Math.round((1-st)*100)+"%";$("lives").textContent="Vínculo "+"♥".repeat(lives)+"♡".repeat(3-lives);$("fill").style.background="hsl("+(10+(1-st)*130)+",55%,55%)";
+const sv=V?st:0;$("vig").style.opacity=Math.max(0,sv-.35)*1.2;R.domElement.style.filter="blur("+Math.max(0,sv-.5)*5+"px) saturate("+(1-sv*.4)+")";
+const sh=Math.max(sv>.6?(sv-.6)*.05:0,al>0?.04:0,shk);shk=Math.max(0,shk-dt*.3);C.position.set(pl.x+(Math.random()-.5)*sh,pl.y+(pl.x>8.4?.15:0)+Math.sin(t*8)*.03*(mv?1:0)+(Math.random()-.5)*sh,pl.z);C.rotation.set(pitch,yaw,0);
+if(seaG)seaG.gain.value=mode=="cut"?0:.02+.12*cl((pl.x+10)/20,0,1)}
+function loop(){requestAnimationFrame(loop);const dt=Math.min(clk.getDelta(),.05);t+=dt;wave(t);
+if(started&&!ended&&!nbOpen&&!typing&&!drawing)update(dt);else if(!started){C.position.copy(pl);C.rotation.set(0,yaw,0)}
+tap={};
+BT.forEach((b,i)=>{b.rotation.z=Math.sin(t*.9+i)*.05;b.position.y=-.05+Math.sin(t+i*2)*.06;if(i)b.position.z+=Math.sin(t*.1+i)*.004});
+IT.forEach(i=>{if(i.got)return;const p=new T.Vector3();i.o.getWorldPosition(p);i.m.rotation.y=t*2;i.m.position.set(p.x,p.y+.55+Math.sin(t*2)*.05,p.z)});
+LA.forEach((l,i)=>{if(l.r){l.position.y+=dt*.3;l.position.x+=Math.sin(t+i)*.002}});if(lit)ll.intensity=Math.min(2,ll.intensity+dt*.4);
+skyAt(mode=="now"?cl((2-pl.z)/95,0,1):mode=="ci"?1:.45);sun.position.set(pl.x+20,30,pl.z+10);sun.target.position.set(pl.x,0,pl.z);sky.position.copy(C.position);hemi.intensity=.5+sun.intensity*.2+fv*.6;fx.intensity=fv*8;gl.material.opacity=fv*.9;fv=Math.max(0,fv-dt*3);
+LB.forEach(p=>{const dd=Math.hypot(p.position.x-pl.x,p.position.z-pl.z),o=mode=="now"?cl((p.userData.r-dd)/4,0,1):0;p.material.opacity=o*.92;p.visible=o>.02});stars.position.copy(C.position);stars.material.opacity=mode=="ci"?1:cl(((mode=="now"?cl((2-pl.z)/95,0,1):.4)-.85)/.15,0,1);
+CLD.forEach((c,i)=>{c.position.x+=dt*(1+i%3)*.6;if(c.position.x>220)c.position.x=-220;c.material.color.copy(S.fog.color);c.material.opacity=mode=="ci"?.22:.55});
+setMus(!started||mode=="ci"?"ci":mode=="pre"?"pre":mode=="cut"?"cut":(ended||idx>=11)?"n5":idx<5?"n1":idx<8?"n2":idx<9?"n3":"n4");
+R.render(S,C);if(snapReq){const c=document.createElement("canvas");c.width=240;c.height=150;c.getContext("2d").drawImage(R.domElement,0,0,240,150);snapReq.src=c.toDataURL("image/jpeg",.7);snapReq=null}}
+loop();
+</script></body></html>
